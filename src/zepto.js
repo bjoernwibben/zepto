@@ -5,6 +5,10 @@ var Zepto = (function() {
     ADJ_OPS={append: 'beforeEnd', prepend: 'afterBegin', before: 'beforeBegin', after: 'afterEnd'},
     e, k, css;
 
+  // fix for iOS 3.2
+  if(String.prototype.trim === void 0)
+    String.prototype.trim = function(){ return this.replace(/^\s+/, '').replace(/\s+$/, '') };
+
   function $$(el, selector){ return slice.call(el.querySelectorAll(selector)) }
   function classRE(name){ return new RegExp("(^|\\s)"+name+"(\\s|$)") }
   
@@ -66,10 +70,6 @@ var Zepto = (function() {
     },
     index: function(el){
       return this.dom[IO]($(el).get(0));
-    },
-    anim: function(transform, opacity, dur){
-      return this.css({'-webkit-transition':'all '+(dur||0.5)+'s',
-        '-webkit-transform':transform,'opacity':(opacity===0?0:opacity||1)});
     },
     bind: function(event, callback){
       return this(function(el){
